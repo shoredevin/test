@@ -10,7 +10,7 @@ client.configure(feathers.authentication());
 
 // Login screen
 const loginHTML = `<main class="login container">
-
+  <h1>Hello world</h1>
   <!-- REMOVE MESSAGE BEGIN -->
 
   <div style="background-color: rgb(4 0 255 / 6%); padding: 15px; border-radius: 10px; margin-top: 10px;">
