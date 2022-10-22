@@ -1,91 +1,65 @@
-const { createServer } = require('http');
+// const { PrismaClient, PrismaClientKnownRequestError } = require('@prisma/client');
+const express = require('express');
 const path = require('path');
-const favicon = require('serve-favicon');
-const compress = require('compression');
-const helmet = require('helmet');
-const cors = require('cors');
-const logger = require('./logger');
+const cookieParser = require('cookie-parser');
+// const { v4: uuidv4 } = require('uuid');
+// const logger = require('morgan');
 
-const feathers = require('@feathersjs/feathers');
-const configuration = require('@feathersjs/configuration');
-const express = require('@feathersjs/express');
-const socketio = require('@feathersjs/socketio');
+// const prisma = new PrismaClient();
+
+const app = express();
+
+// app.use(logger('dev'));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 
-const middleware = require('./middleware');
-const services = require('./services');
-const session = require('./session');
-const appHooks = require('./app.hooks');
-const channels = require('./channels');
+app.use(express.static(path.join(__dirname, '../public')));
 
-const authentication = require('./authentication');
-const { connectAndSync, sequelize } = require('./sequelize');
+// Routes
+const apiRouter = require('./routes/api');
+app.use('/api', apiRouter);
 
-module.exports.createApp = function createApp() {
-  const app = express(feathers());
+// /**
+//  * Experimental route with SQL calls
+//  * delete after testing
+//  */
+// const todosql_Router = require('./routes/todosql');
+// app.use('/todosql', todosql_Router);
 
-  // Load app configuration
-  app.configure(configuration());
-  // Enable security, CORS, compression, favicon and body parsing
-  app.use(helmet({
-    contentSecurityPolicy: false
-  }));
-  app.use(cors());
-  app.use(compress());
-  app.use(express.json());
-  app.use(express.urlencoded({ extended: true }));
-  app.use(favicon(path.join(app.get('public'), 'favicon.ico')));
-  // Host the public folder
-  app.use('/', express.static(app.get('public')));
+// app.get('/', authCheck, async (req, res) => {
+//     console.log('/ authenticated state checker: ', res.locals.authenticated)
+//     if(res.locals.authenticated) { 
+//         return res.redirect('/dex') 
+//     }
+//     res.sendFile(path.join(__dirname, '../public/login.html'));
+// })
+  
+// app.get('/cool', authCheck, async (req, res) => {
+//     console.log('/ authenticated state checker: ', res.locals.authenticated)
+//     res.sendFile(path.join(__dirname, '/web/cool.html'));
+// })
 
-  const tlsEnabled = app.get('tlsEnabled');
-  if (typeof tlsEnabled !== 'boolean') throw new Error('Internal error: tlsEnabled not set');
-  if (tlsEnabled) app.set('trust proxy', 1); // trust first proxy
+// app.get('/dex', authCheck, async (req, res) => {
+//     console.log('/ authenticated state checker: ', res.locals.authenticated)
+//     if(!res.locals.authenticated) {
+//         return res.redirect('/');;
+//     }
+//     res.sendFile(path.join(__dirname, '../public/dex.html'));
+// })
 
-  // Set up Plugins and providers
-  app.configure(express.rest());
-  app.configure(socketio());
-  app.configure(sequelize);
-  app.configure(session);
+// app.get('/admin', authCheck, async (req, res) => {
+//     console.log('/ authenticated state checker: ', res.locals.authenticated)
+//     if(!res.locals.authenticated || !res.locals.adminAccess) {
+//         return res.redirect('/');;
+//     }
+//     res.sendFile(path.join(__dirname, '../public/admin.html'));
+// })
 
-  // Configure other middleware (see `middleware/index.js`)
-  app.configure(middleware);
-  app.configure(authentication);
-  // Set up our services (see `services/index.js`)
-  app.configure(services);
-  // Set up event channels (see channels.js)
-  app.configure(channels);
+// //404 route
+// app.use((req, res, next) => {
+//     res.sendfile(path.join(__dirname, '../public/404.html'))
+// });
 
-  // Configure a middleware for 404s and the error handler
-  app.use(express.notFound());
-  app.use(express.errorHandler({ logger }));
-
-  app.hooks(appHooks);
-  return app;
-};
-
-module.exports.startApp = async function startApp(app) {
-  const server = createServer(app);
-  const port = app.get('port');
-
-  app.setup(server);
-
-  await connectAndSync(app);
-
-  await new Promise((resolve, reject) => {
-    let resolved = false;
-    server.on('listening', () => {
-      resolved = true;
-      resolve();
-    });
-    server.on('error', (err) => {
-      logger.error(`App server had an error: ${err.message}`, err);
-      if (!resolved) {
-        resolved = true;
-        reject(err);
-      }
-    });
-    server.listen(port);
-  });
-  return server;
-};
+module.exports = app;
