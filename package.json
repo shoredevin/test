@@ -9,7 +9,8 @@
     "pg": "^8.8.0",
     "prisma": "^3.14.0",
     "sanitize-html": "^2.7.0",
-    "uuid": "^9.0.0"
+    "uuid": "^9.0.0",
+    "yarn": "^1.22.19"
   },
   "devDependencies": {
     "nodemon": "^2.0.16"
