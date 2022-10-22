@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "@prisma/client": "^3.14.0",
+    "cjs": "^0.0.11",
     "cookie-parser": "~1.4.4",
     "debug": "~2.6.9",
     "dotenv": "^16.0.1",

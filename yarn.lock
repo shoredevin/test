@@ -194,6 +194,13 @@ ci-info@^2.0.0:
   resolved "https://registry.yarnpkg.com/ci-info/-/ci-info-2.0.0.tgz#67a9e964be31a51e15e5010d58e6f12834002f46"
   integrity sha512-5tK7EtrZ0N+OLFMthtqOj4fI2Jeb88C4CAZPu25LDVUgXJ0A3Js4PMGqrn0JU1W0Mh1/Z8wZzYPxqUrXeBboCQ==
 
+cjs@^0.0.11:
+  version "0.0.11"
+  resolved "https://registry.yarnpkg.com/cjs/-/cjs-0.0.11.tgz#1fe528ebda8f9ee21f81a7f7b299a8d70b14a47c"
+  integrity sha512-aLndk8BnpIOy/ZxmLGCNTSFoLm0+OyZDtxNCV6jUBHBkLICanUAlkIGtnaQrCBMYTebOmWHNg8+vxtaYZ8LSfA==
+  dependencies:
+    sync-channel "*"
+
 cli-boxes@^2.2.1:
   version "2.2.1"
   resolved "https://registry.yarnpkg.com/cli-boxes/-/cli-boxes-2.2.1.tgz#ddd5035d25094fce220e9cab40a45840a440318f"
@@ -1229,6 +1236,11 @@ supports-color@^7.1.0:
   integrity sha512-qpCAvRl9stuOHveKsn7HncJRvv501qIacKzQlO/+Lwxc9+0q2wLyv4Dfvt80/DPn2pqOBsJdDiogXGR9+OvwRw==
   dependencies:
     has-flag "^4.0.0"
+
+sync-channel@*:
+  version "0.0.6"
+  resolved "https://registry.yarnpkg.com/sync-channel/-/sync-channel-0.0.6.tgz#0bad830d8f1f11b8ce612549e0d9637bb0652850"
+  integrity sha512-rjHHukZeQW3hGgwMuOkrITv1e87nxuAKRGgwPNtCmS3Az+YdO826hBy1IDjRsTXKGc2WDWUaDU5Zx8uodXWwgg==
 
 to-readable-stream@^1.0.0:
   version "1.0.0"
